@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout') {
+            steps {
+                git "https://github.com/VilaTiw/software-life-cycle_lab6"
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'echo "Setting up Python environment..."'
+                sh 'python3 -m venv venv'  // Створюємо віртуальне середовище
+                sh 'source venv/bin/activate && pip install -r requirements.txt'  // Встановлення залежностей
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'source venv/bin/activate && pytest'  // Запуск тестів (якщо є)
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'mkdir -p cargo && cp -r * cargo/'
+                sh 'echo "Deployed to cargo folder"'
+            }
+        }
+    }
+}
