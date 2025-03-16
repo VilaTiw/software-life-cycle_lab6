@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Завантаження файлів з репозиторію на GitHub
-                git 'https://github.com/ТВІЙ-РЕПО.git'
+                git "https://github.com/VilaTiw/software-life-cycle_lab6"
             }
         }
 
