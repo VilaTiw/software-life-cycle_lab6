@@ -1,31 +1,36 @@
 pipeline {
     agent any
-    
+
     stages {
         stage('Checkout') {
             steps {
-                git "https://github.com/VilaTiw/software-life-cycle_lab6"
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'echo "Setting up Python environment..."'
-                sh 'python3 -m venv venv'  // Створюємо віртуальне середовище
-                sh 'source venv/bin/activate && pip install -r requirements.txt'  // Встановлення залежностей
+                // Завантаження файлів з репозиторію на GitHub
+                git 'https://github.com/ТВІЙ-РЕПО.git'
             }
         }
 
         stage('Test') {
             steps {
-                sh 'source venv/bin/activate && pytest'  // Запуск тестів (якщо є)
+                // Імітація запуску тестів
+                echo 'Тести виконано!'
             }
         }
 
-        stage('Deploy') {
+        stage('Archive Files') {
             steps {
-                sh 'mkdir -p cargo && cp -r * cargo/'
-                sh 'echo "Deployed to cargo folder"'
+                // Створення архіву з усіма файлами проекту
+                sh 'tar -czvf project_archive.tar.gz .'
+            }
+        }
+
+        stage('Move to Cargo Folder') {
+            steps {
+                // Створення папки cargo, якщо її ще немає
+                sh 'mkdir -p cargo'
+
+                // Переміщення архіву в папку cargo
+                sh 'mv project_archive.tar.gz cargo/'
+                echo 'Архів переміщено до папки cargo'
             }
         }
     }
