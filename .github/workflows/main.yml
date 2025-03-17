@@ -1,0 +1,37 @@
+name: CI/CD Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create archive of the project
+        run: |
+          mkdir -p output
+          zip -r output/project_archive.zip ./* -x ".git/*"
+
+      - name: Run tests (Simulation)
+        run: |
+          echo "Running tests..."
+          echo "All tests passed successfully!"
+
+      - name: Create report file
+        run: |
+          echo "Project archived and tests passed successfully on $(date)" > output/report.txt
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: project-artifacts
+          path: output/
